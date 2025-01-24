@@ -6,9 +6,10 @@ Plongez dans les données sur les émissions de CO₂ pour explorer les tendance
 
 ## 🖼️ Aperçu du Projet
 
-_(Ajoutez ici une image ou un aperçu visuel avec ![alt text](lien))_
+_
 
----
+---![Teaser](https://github.com/user-attachments/assets/1073fcc9-3b93-4921-a15f-fe856a94e4eb)
+
 
 ## 🌐 Description
 
