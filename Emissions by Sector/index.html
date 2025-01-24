@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CO₂ Emissions by Sector</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #ffffff;
+            padding-top: 70px;
+        }
+        h1 {
+            text-align: center;
+            color: #01579b;
+        }
+        .description {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #0277bd;
+            font-weight: bold;
+        }
+        .controls {
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .controls label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            max-width: 100%;
+        }
+        .checkbox-container label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #f1f1f1;
+            padding: 5px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .checkbox-container label:hover {
+            background: #0288d1;
+            color: white;
+        }
+        .checkbox-container input {
+            cursor: pointer;
+        }
+        #chart {
+            margin-top: 20px;
+        }
+        .tooltip {
+            position: absolute;
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+            display: none;
+            pointer-events: none;
+        }
+        .bubble {
+            stroke: #fff;
+            stroke-width: 1px;
+        }
+        .top-values {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f1f8fe;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+        .top-values h3 {
+            text-align: center;
+            color: #0277bd;
+            margin-bottom: 15px;
+        }
+        .top-values ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .top-values li {
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            flex: 1 1 calc(33.333% - 10px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .top-values li span {
+            font-size: 14px;
+            color: #555555;
+        }
+        .top-values li strong {
+            color: #0288d1;
+        }
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #0077b6;
+            z-index: 1000;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            animation: slide-down 0.6s ease-in-out;
+        }
+
+        .navbar-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: fade-in 1.5s ease-in-out;
+        }
+
+        .navbar-logo {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+
+        .navbar-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar-links li {
+            position: relative;
+            overflow: hidden; /* Nécessaire pour les animations */
+        }
+
+        .navbar-links li a {
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-transform: capitalize;
+            transition: color 0.3s ease, transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .navbar-links li a::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: white;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-links li a:hover::before {
+            transform: translateX(0);
+        }
+
+        .navbar-links li a:hover {
+            color: #cce7ff;
+            transform: scale(1.1);
+        }
+        
+        /* Footer */
+        footer {
+            background: #333; /* Couleur de fond sombre */
+            color: white; /* Couleur de texte blanche */
+            text-align: center; /* Centre le texte */
+            padding: 15px 10px; /* Ajoute de l'espace interne */
+            font-size: 14px; /* Taille de police standard */
+            animation: fade-in 2s ease-in-out; /* Effet d'apparition */
+            line-height: 1.6; /* Espacement entre les lignes pour plus de lisibilité */
+        }
+
+        footer a {
+            color: #1e90ff; /* Couleur des liens */
+            text-decoration: none; /* Supprime le soulignement */
+            font-weight: bold; /* Met le lien en gras */
+            transition: color 0.3s ease; /* Effet de transition au survol */
+        }
+
+        footer a:hover {
+            color: #87cefa; /* Change la couleur au survol */
+        }
+
+        /* Animations */
+        @keyframes slide-down {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slide-up {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="navbar-brand">
+                
+                🌍CO₂ Explorer
+            </a>
+            <ul class="navbar-links">
+                <li><a href="../Top Contributors/index.html">Top Contributors</a></li>
+                <li><a href="./index.html">Emissions by Sector</a></li>
+                <li><a href="../CO2 Temperature/index.html">CO₂ & Temperature</a></li>
+                <li><a href="../CO2 Emissions Visualization/Index4.html">Most Affected Countries</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>CO₂ Emissions by Sector</h1>
+    <div class="description">
+        How can we effectively visualize CO₂ emissions by sector to identify the largest contributors?
+    </div>
+    <div class="controls">
+        <div>
+            <label for="year-select">Select Year:</label>
+            <select id="year-select"></select>
+        </div>
+        <div>
+            <label>Filter by Sector:</label>
+            <div class="checkbox-container" id="sector-select"></div>
+        </div>
+        <div>
+            <label>Filter by Country:</label>
+            <div class="checkbox-container" id="country-select"></div>
+        </div>
+    </div>
+    <div id="chart"></div>
+    <div class="tooltip" id="tooltip"></div>
+    <div class="top-values" id="top-values">
+        <h3>Top Values for Each Sector</h3>
+        <ul id="top-values-list"></ul>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            Ce projet a été réalisé dans le cadre du cours de 
+            <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2024/" target="_blank">Data Visualisation</a>, 
+            enseigné par le Professeur 
+            <a href="https://tabard.fr/" target="_blank">Aurélien TABARD</a>, 
+            à l'
+            <a href="https://www.univ-lyon1.fr/" target="_blank">Université Claude Bernard Lyon1</a>.
+        </p>
+        <p>&copy; 2025 CO₂ Explorer. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const csvUrl = "https://raw.githubusercontent.com/Koautar/datasets/main/dataset.csv";
+
+        const width = 900, height = 600, margin = { top: 50, right: 50, bottom: 100, left: 150 };
+
+        const tooltip = d3.select("#tooltip");
+
+        const svg = d3.select("#chart")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+        d3.csv(csvUrl).then(data => {
+            data.forEach(d => {
+                d.value = +d.value;
+                d.year = +d.date.split("/")[2];
+            });
+
+            const years = [...new Set(data.map(d => d.year))];
+            const sectors = [...new Set(data.map(d => d.sector))];
+            const countries = [...new Set(data.map(d => d.country))];
+
+            const yearSelect = d3.select("#year-select");
+            years.forEach(year => {
+                yearSelect.append("option")
+                    .attr("value", year)
+                    .text(year);
+            });
+
+            const sectorSelect = d3.select("#sector-select");
+            const countrySelect = d3.select("#country-select");
+
+            sectors.forEach(sector => {
+                sectorSelect.append("label")
+                    .html(`<input type="checkbox" value="${sector}" checked> ${sector}`);
+            });
+
+            countries.forEach(country => {
+                if (country !== "ROW" && country !== "World" && country !== "EU27 & UK") {
+                    countrySelect.append("label")
+                        .html(`<input type="checkbox" value="${country}" checked> ${country}`);
+                }
+            });
+
+            const xScale = d3.scalePoint()
+                .range([margin.left, width - margin.right])
+                .padding(0.5);
+
+            const yScale = d3.scalePoint()
+                .range([margin.top, height - margin.bottom])
+                .padding(0.5);
+
+            const rScale = d3.scaleSqrt()
+                .range([5, 40]);
+
+            const colorScale = d3.scaleOrdinal(d3.schemePastel1);
+
+            const xAxis = svg.append("g")
+                .attr("transform", `translate(0,${height - margin.bottom})`);
+
+            const yAxis = svg.append("g")
+                .attr("transform", `translate(${margin.left},0)`);
+
+            function update(selectedYear, selectedSectors, selectedCountries) {
+                const filteredData = data.filter(d =>
+                    d.year === selectedYear &&
+                    selectedSectors.includes(d.sector) &&
+                    selectedCountries.includes(d.country)
+                );
+
+                const totalBySectorCountry = d3.rollups(
+                    filteredData,
+                    v => d3.sum(v, d => d.value),
+                    d => d.sector,
+                    d => d.country
+                );
+
+                const bubbleData = [];
+                totalBySectorCountry.forEach(([sector, countries]) => {
+                    countries.forEach(([country, value]) => {
+                        bubbleData.push({ sector, country, value });
+                    });
+                });
+
+                xScale.domain(selectedSectors);
+                yScale.domain(selectedCountries);
+                rScale.domain([0, d3.max(bubbleData, d => d.value)]);
+
+                xAxis.call(d3.axisBottom(xScale));
+                yAxis.call(d3.axisLeft(yScale));
+
+                const bubbles = svg.selectAll(".bubble")
+                    .data(bubbleData, d => `${d.sector}-${d.country}`);
+
+                bubbles.enter()
+                    .append("circle")
+                    .attr("class", "bubble")
+                    .attr("cx", d => xScale(d.sector))
+                    .attr("cy", d => yScale(d.country))
+                    .attr("r", 0)
+                    .attr("fill", d => colorScale(d.sector))
+                    .attr("opacity", 0.8)
+                    .on("mouseover", (event, d) => {
+                        tooltip.style("display", "block")
+                            .html(`Sector: ${d.sector}<br>Country: ${d.country}<br>Value: ${d.value}`)
+                            .style("left", `${event.pageX + 10}px`)
+                            .style("top", `${event.pageY + 10}px`);
+                    })
+                    .on("mouseout", () => tooltip.style("display", "none"))
+                    .merge(bubbles)
+                    .transition()
+                    .duration(1000)
+                    .attr("cx", d => xScale(d.sector))
+                    .attr("cy", d => yScale(d.country))
+                    .attr("r", d => rScale(d.value));
+
+                bubbles.exit().transition()
+                    .duration(500)
+                    .attr("r", 0)
+                    .remove();
+
+                const topValues = d3.rollups(
+                    bubbleData,
+                    v => v.reduce((max, d) => d.value > max.value ? d : max),
+                    d => d.sector
+                );
+
+                const topValuesList = d3.select("#top-values-list");
+                topValuesList.selectAll("li").remove();
+
+                topValues.forEach(([sector, { country, value }]) => {
+                    topValuesList.append("li")
+                        .html(`
+                            <strong>${sector}</strong>
+                            <span>Country: ${country}</span>
+                            <span>Value: ${value.toLocaleString()}</span>
+                        `);
+                });
+            }
+
+            const initialYear = years[0];
+            const initialSectors = sectors;
+            const initialCountries = countries.filter(c => c !== "ROW" && c !== "World" && c !== "EU27 & UK");
+            update(initialYear, initialSectors, initialCountries);
+
+            yearSelect.on("change", function () {
+                const selectedYear = +this.value;
+                const selectedSectors = Array.from(document.querySelectorAll("#sector-select input:checked")).map(d => d.value);
+                const selectedCountries = Array.from(document.querySelectorAll("#country-select input:checked")).map(d => d.value);
+                update(selectedYear, selectedSectors, selectedCountries);
+            });
+
+            document.querySelectorAll("#sector-select input").forEach(input => {
+                input.addEventListener("change", () => {
+                    const selectedYear = +yearSelect.property("value");
+                    const selectedSectors = Array.from(document.querySelectorAll("#sector-select input:checked")).map(d => d.value);
+                    const selectedCountries = Array.from(document.querySelectorAll("#country-select input:checked")).map(d => d.value);
+                    update(selectedYear, selectedSectors, selectedCountries);
+                });
+            });
+
+            document.querySelectorAll("#country-select input").forEach(input => {
+                input.addEventListener("change", () => {
+                    const selectedYear = +yearSelect.property("value");
+                    const selectedSectors = Array.from(document.querySelectorAll("#sector-select input:checked")).map(d => d.value);
+                    const selectedCountries = Array.from(document.querySelectorAll("#country-select input:checked")).map(d => d.value);
+                    update(selectedYear, selectedSectors, selectedCountries);
+                });
+            });
+        }).catch(error => console.error("Error loading data:", error));
+    </script>
+</body>
+</html>
