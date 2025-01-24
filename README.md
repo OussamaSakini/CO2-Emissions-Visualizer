@@ -97,7 +97,7 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
 1.	Ouvrez [le fichier](https://co-2-emissions-visualizer.vercel.app/) dans votre navigateur pour explorer les visualisations.
 
 ### 🇬🇧 English
-1.	Open [file](https://co-2-emissions-visualizer.vercel.app/) in your browser to explore the visualizations.
+1.	Open [the file](https://co-2-emissions-visualizer.vercel.app/) in your browser to explore the visualizations.
 
 ---
 
