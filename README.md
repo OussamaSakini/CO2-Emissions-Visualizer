@@ -3,14 +3,16 @@
 Plongez dans les données sur les émissions de CO₂ pour explorer les tendances globales et comprendre leurs impacts sur le changement climatique. À travers des visualisations interactives, ce projet vous permet d'analyser les données clés pour mieux appréhender les enjeux environnementaux actuels.
 
 <div align="center">
-  <img src="image.jpg" alt="Aperçu" width="200">
+  <img src="image.jpg" alt="Aperçu" width="300">
 </div>
 
 ---
 
 ## 🖼️ Aperçu du Projet
 
-![Teaser](https://github.com/user-attachments/assets/1073fcc9-3b93-4921-a15f-fe856a94e4eb)
+<div align="center">
+  <img src="Teaser.jpg" alt="Aperçu" width="500">
+</div>
 ---
 
 ## 🌐 Description
@@ -103,14 +105,6 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
    [https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git](https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git)
 2.	git clone https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git
 3.	Open the index.html file in your browser to explore the visualizations.
-
----
-
-## 🎥 Démonstration / Demonstration
-
-### 🇫🇷 Français / 🇬🇧 English
-Découvrez une démonstration des visualisations interactives :  
-_(Ajoutez ici un lien ou une capture d'écran de la démonstration)_
 
 ---
 
