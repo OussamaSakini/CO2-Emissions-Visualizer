@@ -94,16 +94,10 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
 ## 🚀 Instructions
 
 ### 🇫🇷 Français
-1. Clonez ce repository :  
-   [https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git](https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git)
-2.	git clone https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git
-3.	Ouvrez le fichier index.html dans votre navigateur pour explorer les visualisations.
+1.	Ouvrez [le fichier](https://co-2-emissions-visualizer.vercel.app/) dans votre navigateur pour explorer les visualisations.
 
 ### 🇬🇧 English
-1. Clone this repository:  
-   [https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git](https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git)
-2.	git clone https://github.com/OussamaSakini/CO2-Emissions-Visualizer.git
-3.	Open the index.html file in your browser to explore the visualizations.
+1.	Open [file](https://co-2-emissions-visualizer.vercel.app/) in your browser to explore the visualizations.
 
 ---
 
