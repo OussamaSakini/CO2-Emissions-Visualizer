@@ -1,0 +1,88 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive World Map with Statistics</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="navbar-brand">🌍CO₂ Explorer</a>
+            <ul class="navbar-links">
+                <li><a href="../Top Contributors/index.html">Top Contributors</a></li>
+                <li><a href="../Emissions by Sector/index.html">Emissions by Sector</a></li>
+                <li><a href="./index.html">CO₂ & Temperature</a></li>
+                <li><a href="../CO2 Emissions Visualization/Index4.html">Most Affected Countries</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div id="controls">
+        <div class="slider-container">
+            <label id="year-label">Year: 1961</label>
+            <input type="range" id="year-slider" min="1961" max="2023" step="1" value="1961" aria-label="Year Selector">
+        </div>
+        <div class="slider-container">
+            <label id="month-label">Month: January</label>
+            <input type="range" id="month-slider" min="0" max="11" step="1" value="0" aria-label="Month Selector">
+        </div>
+    </div>
+
+    <div id="map-container"></div>
+
+    <div id="chart-container"></div>
+
+    <div class="stats-container" id="statsContainer">
+        <h2>Monthly Statistics</h2>
+        <div class="stat-card">
+            <div class="icon">📈</div>
+            <div class="value" id="highest-diff">Estonia (4.98)</div>
+            <p>Countries with the Highest Difference</p>
+        </div>
+        <div class="stat-card">
+            <div class="icon">📉</div>
+            <div class="value" id="lowest-diff">Greenland (-6.64)</div>
+            <p>Countries with the Lowest Difference</p>
+        </div>
+        <div class="stat-card">
+            <div class="icon">📊</div>
+            <div class="value" id="avg-diff">0.35</div>
+            <p>Average Difference</p>
+        </div>
+        <div class="stat-card">
+            <div class="icon">🔄</div>
+            <div class="value" id="median-diff">0.11</div>
+            <p>Median of Differences</p>
+        </div>
+        <!-- Central statistic -->
+        <div class="stat-card central-card">
+            <div class="icon">🌍</div>
+            <div class="value" id="reporting-countries">232</div>
+            <p>Number of Reporting Countries</p>
+        </div>
+        <div class="stat-card">
+            <div class="icon">⚖️</div>
+            <div class="value" id="std-dev">1.42</div>
+            <p>Standard Deviation</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            Ce projet a été réalisé dans le cadre du cours de 
+            <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2024/" target="_blank">Data Visualisation</a>, 
+            enseigné par le Professeur 
+            <a href="https://tabard.fr/" target="_blank">Aurélien TABARD</a>, 
+            à l'
+            <a href="https://www.univ-lyon1.fr/" target="_blank">Université Claude Bernard Lyon1</a>.
+        </p>
+        <p>&copy; 2025 CO₂ Explorer. All rights reserved.</p>
+    </footer>
+
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="script.js"></script>
+</body>
+</html>
