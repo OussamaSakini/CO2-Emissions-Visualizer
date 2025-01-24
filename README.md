@@ -1,7 +1,8 @@
 # 🌍 Exploration des Émissions de CO₂ et du Changement Climatique | CO₂ Explorer
 
 Plongez dans les données sur les émissions de CO₂ pour explorer les tendances globales et comprendre leurs impacts sur le changement climatique. À travers des visualisations interactives, ce projet vous permet d'analyser les données clés pour mieux appréhender les enjeux environnementaux actuels.
-![Teaser](https://github.com/user-attachments/assets/1073fcc9-3b93-4921-a15f-fe856a94e4eb)
+![Teaser](https://github.com/image.jpg)
+
 ---
 
 ## 🖼️ Aperçu du Projet
