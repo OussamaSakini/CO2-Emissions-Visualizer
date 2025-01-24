@@ -101,6 +101,16 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
 
 ---
 
+## 🎥 Démonstration / Demonstration
+
+### 🇫🇷 Français / 🇬🇧 English
+Découvrez une démonstration des visualisations interactives :  
+_<div align="center">
+  <img src="video.mp4" alt="Aperçu" width="500">
+</div>_
+
+---
+
 ## 📧 Contact
 
 Pour toute question ou suggestion, contactez-nous via notre adresse mail :  
