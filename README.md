@@ -2,7 +2,7 @@
 
 Plongez dans les données sur les émissions de CO₂ pour explorer les tendances globales et comprendre leurs impacts sur le changement climatique. À travers des visualisations interactives, ce projet vous permet d'analyser les données clés pour mieux appréhender les enjeux environnementaux actuels.
 
-![Aperçu](main/image.jpg)
+![Aperçu](image.jpg)
 
 ---
 
