@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <title>Organic Oil Emissions Visualization</title>
+    <style>
+      body {
+        font-family: "Roboto", Arial, sans-serif;
+        margin: 0;
+        background-color: #ffffff;
+        color: #000000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        padding: 0;
+      }
+
+      .header {
+        width: 100%;
+        padding: 20px 0;
+        text-align: center;
+        background-color: #f5f5f5;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .header h1 {
+        font-size: 32px;
+        font-weight: bold;
+      }
+
+      .map-container {
+        flex: 2;
+        width: 93%;
+        max-width: 1500px;
+        margin: 20px auto;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        position: relative;
+      }
+
+      .map-container svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .title {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        padding: 10px 0;
+        color: #333333;
+        background-color: #e6e6e6;
+      }
+
+      .tooltip {
+        position: absolute;
+        background: #f5f5f5;
+        color: #222;
+        padding: 10px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #ddd;
+        font-size: 12px;
+        pointer-events: none;
+        opacity: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        z-index: 100;
+      }
+
+      .slider {
+        position: absolute;
+        top: 50%;
+        left: 20px;
+        transform: translateY(-50%);
+        writing-mode: vertical-lr;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .slider input[type="range"] {
+        appearance: none;
+        width: 10px;
+        height: 200px;
+        background: linear-gradient(to bottom, #007acc, #005fa3);
+        border-radius: 10px;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .slider input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        background: #ffffff;
+        border: 2px solid #007acc;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s ease-in-out;
+      }
+
+      .slider input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.2);
+        background: #f0f0f0;
+      }
+
+      .slider span {
+        font-size: 16px;
+        color: #333333;
+        font-weight: bold;
+        transform: rotate(-90deg);
+      }
+
+      /* Playback Controls */
+      .playback-controls {
+        position: absolute;
+        top: 40%;
+        left: 70px; 
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        background: #007acc;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      button:hover {
+        background: #45a047;
+        transform: translateY(-2px);
+      }
+
+      button:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navigation-buttons {
+        margin-top: 10px;
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .navigation-buttons button {
+        padding: 10px 15px;
+        font-size: 14px;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+      }
+
+      .navigation-buttons button:hover {
+        background-color: #45a047;
+        transform: translateY(-2px);
+      }
+
+      .navigation-buttons button:active {
+        transform: translateY(0);
+      }
+
+      .stats-container {
+        margin-top: 20px;
+        padding: 20px;
+        width: 90%;
+        max-width: 1200px;
+        background: linear-gradient(135deg, #e0f7fa, #ffffff);
+        border-radius: 15px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        color: #000000;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .stats-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .stats-container h2 {
+        grid-column: 1 / -1;
+        margin-bottom: 20px;
+        font-size: 24px;
+        color: #007acc;
+        text-align: center;
+      }
+
+      .stats-container .stat-card {
+        padding: 15px;
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .stats-container .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .stats-container .stat-card p {
+        margin: 10px 0 0;
+        font-size: 16px;
+        color: #555555;
+      }
+
+      .stats-container .stat-card .value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007acc;
+        margin-bottom: 5px;
+      }
+
+      .stats-container .stat-card .icon {
+        font-size: 40px;
+        color: #007acc;
+        margin-bottom: 10px;
+      }
+
+
+      .country-plot {
+        position: fixed;
+        top: 10%;
+        right: 10%;
+        width: 450px;
+        height: 350px;
+        background: #f5f5f5;
+        border-radius: 10px;
+        padding: 15px;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .country-plot h3 {
+        margin: 0;
+        padding: 0 0 10px;
+        font-size: 18px;
+        color: #333333;
+      }
+
+      .country-plot svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      .close-plot {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: #ff4d4f;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: background-color 0.3s, transform 0.2s;
+      }
+
+      .close-plot:hover {
+        background: #ff7875;
+      }
+
+      .close-plot:active {
+        transform: scale(0.9);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>Carbon dioxide (CO2) emissions from Organic Soil (Mt CO2e)</h1>
+      <div class="navigation-buttons">
+        <button onclick="location.href='forest_land.html'">Forest Land</button>
+        <button onclick="location.href='fugitive_emissions.html'">
+          Fugitive Emissions
+        </button>
+        <button onclick="location.href='industrial_combustion.html'">
+          Industrial Combustion
+        </button>
+        <button onclick="location.href='index.html'">World CO2 Emission</button>
+      </div>
+    </div>
+
+    <div class="map-container">
+      <div class="title">Explore Organic Soil Emissions (2000-2020)</div>
+      <div class="slider">
+        <span id="currentYear">2000</span>
+        <input
+          type="range"
+          id="yearSlider"
+          min="2000"
+          max="2020"
+          step="1"
+          value="2000"
+        />
+      </div>
+      
+        <span id="currentYear"></span>
+      </div>
+      <div class="playback-controls">
+        <button id="playButton">Play</button>
+        <button id="stopButton">Stop</button>
+      </div>
+    </div>
+
+    <div class="stats-container" id="statsContainer">
+      <h2>Yearly Statistics</h2>
+      <div class="stat-card">
+        <div class="icon">📈</div>
+        <div class="value" id="maxEmission">0</div>
+        <p>Max Emission</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📉</div>
+        <div class="value" id="minEmission">0</div>
+        <p>Min Emission</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📊</div>
+        <div class="value" id="avgEmission">0</div>
+        <p>Average Emission</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🔄</div>
+        <div class="value" id="evolutionRate">0</div>
+        <p>Year-over-Year Change</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🌍</div>
+        <div class="value" id="totalEmission">0</div>
+        <p>Total Emissions</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🌎</div>
+        <div class="value" id="numCountries">0</div>
+        <p>Number of Reporting Countries</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">⚖️</div>
+        <div class="value" id="medianEmission">0</div>
+        <p>Median Emission</p>
+      </div>
+      <div class="stat-card">
+        <div class="icon">📐</div>
+        <div class="value" id="stdDeviation">0</div>
+        <p>Standard Deviation</p>
+      </div>
+    </div>
+    
+
+    <div class="country-plot" id="countryPlot">
+      <button class="close-plot" id="closePlotButton">X</button>
+      <h3 id="countryName">Country Data</h3>
+      <svg></svg>
+    </div>
+
+    <script>
+      const width = window.innerWidth * 0.95;
+      const height = window.innerHeight * 0.85;
+
+      const svg = d3
+        .select(".map-container")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      const tooltip = d3.select("body").append("div").attr("class", "tooltip");
+
+      const projection = d3
+        .geoNaturalEarth1()
+        .scale(200)
+        .translate([width / 2, height / 2]);
+
+      const path = d3.geoPath().projection(projection);
+
+      let currentYear = 2000;
+      let timer;
+
+      const countryPlot = d3.select("#countryPlot");
+      const countryPlotSvg = countryPlot.select("svg");
+
+      d3.json(
+        "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"
+      ).then((geoData) => {
+        d3.csv("Organic_Oil.csv").then((data) => {
+          // Create mappings for country codes and emissions data
+          const yearData = {};
+          const countryData = {};
+
+          data.forEach((d) => {
+            countryData[d["Country Code"]] = Object.keys(d)
+              .filter((key) => !isNaN(key))
+              .map((year) => ({ year: +year, value: +d[year] }));
+
+            for (let year = 2000; year <= 2020; year++) {
+              if (!yearData[year]) yearData[year] = {};
+              yearData[year][d["Country Code"]] = +d[year];
+            }
+          });
+
+          const updateStats = (year) => {
+            const emissions = Object.values(yearData[year]).filter(
+              (e) => !isNaN(e)
+            );
+            const maxEmission = d3.max(emissions);
+            const minEmission = d3.min(emissions);
+            const avgEmission = d3.mean(emissions);
+            const totalEmission = d3.sum(emissions);
+            const numCountries = emissions.length;
+
+            const prevYearEmissions = Object.values(
+              yearData[year - 1] || {}
+            ).filter((e) => !isNaN(e));
+            const prevYearTotal = d3.sum(prevYearEmissions);
+            const evolutionRate = prevYearTotal
+              ? ((totalEmission - prevYearTotal) / prevYearTotal) * 100
+              : 0;
+
+            d3.select("#maxEmission").text(
+              `Max Emission: ${maxEmission ? maxEmission.toFixed(2) : "N/A"}`
+            );
+            d3.select("#minEmission").text(
+              `Min Emission: ${minEmission ? minEmission.toFixed(2) : "N/A"}`
+            );
+            d3.select("#avgEmission").text(
+              `Average Emission: ${
+                avgEmission ? avgEmission.toFixed(2) : "N/A"
+              }`
+            );
+            d3.select("#totalEmission").text(
+              `Total Emissions: ${
+                totalEmission ? totalEmission.toFixed(2) : "N/A"
+              }`
+            );
+            d3.select("#numCountries").text(
+              `Number of Reporting Countries: ${numCountries}`
+            );
+            d3.select("#evolutionRate").text(
+              `Year-over-Year Change: ${evolutionRate.toFixed(2)}%`
+            );
+          };
+
+          const updateCountryPlot = (countryCode, countryName) => {
+            const data = countryData[countryCode];
+            if (!data) return;
+
+            countryPlot.style("display", "block");
+            d3.select("#countryName").text(countryName);
+
+            const margin = { top: 20, right: 30, bottom: 30, left: 40 };
+            const plotWidth = 400 - margin.left - margin.right;
+            const plotHeight = 300 - margin.top - margin.bottom;
+
+            const x = d3
+              .scaleLinear()
+              .domain(d3.extent(data, (d) => d.year))
+              .range([0, plotWidth]);
+
+            const y = d3
+              .scaleLinear()
+              .domain([0, d3.max(data, (d) => d.value)])
+              .nice()
+              .range([plotHeight, 0]);
+
+            countryPlotSvg.selectAll("*").remove();
+
+            const g = countryPlotSvg
+              .append("g")
+              .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            g.append("g")
+              .attr("transform", `translate(0,${plotHeight})`)
+              .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+            g.append("g").call(d3.axisLeft(y));
+
+            g.append("path")
+              .datum(data)
+              .attr("fill", "none")
+              .attr("stroke", "#007acc")
+              .attr("stroke-width", 1.5)
+              .attr(
+                "d",
+                d3
+                  .line()
+                  .x((d) => x(d.year))
+                  .y((d) => y(d.value))
+              );
+          };
+
+          const updateMap = (year) => {
+            const emissions = yearData[year];
+            const maxEmission = d3.max(Object.values(emissions));
+            const minEmission = d3.min(Object.values(emissions));
+
+            const colorScale = d3
+              .scaleSequential(d3.interpolateRgb("#00008b", "#add8e6"))
+              .domain([maxEmission, minEmission]);
+
+            svg
+              .selectAll("path")
+              .data(geoData.features)
+              .join("path")
+              .attr("d", path)
+              .transition()
+              .duration(500)
+              .attr("fill", (d) => {
+                const value = emissions[d.id];
+                return value ? colorScale(value) : "#d3d3d3"; // Light gray for no data
+              });
+
+            svg
+              .selectAll("path")
+              .on("mousemove", (event, d) => {
+                const value = emissions[d.id];
+                tooltip
+                  .style("left", event.pageX - 50 + "px")
+                  .style("top", event.pageY - 50 + "px")
+                  .style("opacity", 1)
+                  .html(
+                    `<strong>${
+                      d.properties.name || "Unknown"
+                    }</strong><br/>Organic Soil Emission: ${
+                      value ? value.toFixed(2) : "No Data"
+                    }`
+                  );
+              })
+              .on("mouseout", () => {
+                tooltip.style("opacity", 0);
+              })
+              .on("click", (event, d) => {
+                updateCountryPlot(d.id, d.properties.name);
+              });
+
+            updateStats(year);
+          };
+
+          const playAnimation = () => {
+            if (timer) return;
+            timer = setInterval(() => {
+              currentYear = currentYear < 2020 ? currentYear + 1 : 2000;
+              d3.select("#yearSlider").property("value", currentYear);
+              d3.select("#currentYear").text(currentYear);
+              updateMap(currentYear);
+            }, 1000);
+          };
+
+          const stopAnimation = () => {
+            clearInterval(timer);
+            timer = null;
+          };
+
+          d3.select("#yearSlider").on("input", function () {
+            currentYear = +this.value;
+            d3.select("#currentYear").text(currentYear);
+            updateMap(currentYear);
+          });
+
+          d3.select("#playButton").on("click", playAnimation);
+          d3.select("#stopButton").on("click", stopAnimation);
+
+          d3.select("#closePlotButton").on("click", () => {
+            countryPlot.style("display", "none");
+          });
+
+          updateMap(currentYear);
+        });
+      });
+    </script>
+  </body>
+</html>
