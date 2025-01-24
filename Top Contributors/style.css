@@ -1,0 +1,353 @@
+/* General Adjustments */
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #eef2f7;
+    margin: 0;
+    padding: 0;
+    padding-top: 70px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    font-size: 2rem;
+    color: #333;
+}
+
+.chart-container {
+    height: 600px;
+    margin: 20px auto;
+    background-color: #eef2f7;
+}
+
+/* Tabs Navigation */
+.tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Moins d'espace entre les boutons */
+    margin-bottom: 15px;
+}
+
+.tab-link {
+    padding: 10px 18px; /* Taille réduite */
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #ffffff;
+    background-color: #0078d7;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.tab-link.active {
+    background-color: #0056b3;
+}
+
+.tab-link:hover {
+    background-color: #00509e;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    padding: 10px; /* Réduction de l'espace interne */
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Controls Section */
+.controls-section h2 {
+    font-size: 1.6rem; /* Réduction de la taille */
+    margin-bottom: 15px;
+    color: #1a202c;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px; /* Réduction de l'espace */
+    margin-bottom: 15px;
+}
+
+.select-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Moins d'espace entre label et select */
+}
+
+/* Spécifique au dropdown */
+select {
+    padding: 10px 15px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #f9f9f9;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    width: 180px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 1rem;
+}
+
+
+select:hover {
+    background-color: #f0f8ff; /* Couleur plus douce au survol */
+    border-color: #0078d7; /* Bordure plus vive */
+}
+
+select:focus {
+    outline: none; /* Supprime l'effet de contour par défaut */
+    border-color: #0078d7; /* Couleur de focus vive */
+    box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.3); /* Indicateur de focus avec ombre */
+}
+
+option {
+    padding: 10px; /* Meilleure lisibilité pour les options */
+    font-size: 1rem;
+}
+
+
+/* Emission Options */
+.emission-type h3 {
+    font-size: 1.2rem; /* Réduction de la taille */
+    margin-bottom: 10px;
+    color: #2d3748;
+}
+
+.emission-options {
+    display: flex;
+    gap: 10px; /* Réduction de l'espace entre les boutons */
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.emission-option {
+    padding: 8px 15px; /* Réduction de la taille */
+    border-radius: 6px;
+    border: 2px solid transparent;
+    font-size: 0.9rem; /* Réduction de la taille */
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.emission-option.active {
+    background-color: #cde8ff;
+    border-color: #3182ce;
+}
+
+.emission-option:hover {
+    background-color: #e6f6ff;
+    border-color: #3182ce;
+}
+
+/* Chart Section */
+.chart-container {
+    margin-top: 15px; /* Réduction de l'espace au-dessus */
+    height: 600px; /* Réduction de la hauteur */
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+/* Toggle Container */
+.toggle-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* Un peu plus d'espace entre les boutons */
+    margin-top: 15px;
+}
+
+/* Toggle Buttons */
+.toggle-button {
+    padding: 10px 20px; /* Taille un peu plus grande pour plus de confort */
+    border-radius: 8px; /* Coins légèrement plus arrondis */
+    border: 2px solid transparent;
+    background-color: #f0f8ff; /* Couleur de fond plus douce */
+    cursor: pointer;
+    font-size: 1rem; /* Taille de texte légèrement augmentée */
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet 3D */
+    transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-button.active {
+    background-color: #0078d7; /* Couleur plus vive pour l'état actif */
+    border-color: #0056b3;
+    color: white; /* Texte blanc pour contraste */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombre plus marquée pour l'état actif */
+    transform: scale(1.05); /* Légère mise en avant */
+}
+
+.toggle-button:hover {
+    background-color: #e0f3ff; /* Couleur claire pour l'état hover */
+    border-color: #0078d7;
+    transform: scale(1.03); /* Légère mise en avant au survol */
+}
+
+.toggle-button:focus {
+    outline: none; /* Retire le contour par défaut */
+    box-shadow: 0 0 0 3px rgba(0, 120, 215, 0.5); /* Indicateur d'accessibilité */
+}
+
+.toggle-button:active {
+    transform: scale(0.98); /* Effet de clic */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre réduite */
+}
+/* Style des étiquettes (labels) */
+label {
+    font-size: 1rem; /* Taille de texte légèrement augmentée */
+    font-weight: 600; /* Met en valeur le texte */
+    color: #2d3748; /* Couleur foncée pour un meilleur contraste */
+    text-transform: uppercase; /* Transforme le texte en majuscules */
+    letter-spacing: 0.05em; /* Espacement entre les lettres */
+    margin-bottom: 5px; /* Espacement sous l'étiquette */
+    display: inline-block; /* Assure une bonne disposition au-dessus des inputs */
+    text-align: center; /* Centre le texte */
+    background: linear-gradient(to right, #f9f9f9, #e6f6ff); /* Ajoute un léger dégradé */
+    padding: 5px 10px; /* Ajoute un peu de rembourrage autour du texte */
+    border-radius: 4px; /* Coins légèrement arrondis */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre douce pour un effet 3D */
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: #0077b6;
+    z-index: 1000;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    height: 60px; /* Réduisez la hauteur pour éviter qu'elle soit trop grande */
+    display: flex;
+    align-items: center; /* Centre le contenu verticalement */
+}
+
+.navbar-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px; /* Moins d'espace autour */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    font-size: 18px; /* Réduction de la taille du texte */
+    font-weight: bold;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 15px; /* Réduction de l'espace entre les liens */
+}
+
+.navbar-links li a {
+    color: white;
+    padding: 8px 12px; /* Réduction du padding */
+    border-radius: 5px;
+    text-transform: capitalize;
+    transition: background 0.3s ease, transform 0.2s ease;
+    font-size: 14px; /* Réduction de la taille du texte */
+}
+
+.navbar-links li a:hover {
+    background: #005f87;
+    transform: scale(1.1);
+}
+
+.navbar-links li a:hover::before {
+    transform: translateX(0);
+}
+
+/* Footer */
+footer {
+    background: #333; /* Couleur de fond sombre */
+    color: white; /* Couleur de texte blanche */
+    text-align: center; /* Centre le texte */
+    padding: 10px 0; /* Réduction de l'espace interne */
+    font-size: 14px; /* Taille de police standard */
+    line-height: 1.4; /* Espacement réduit entre les lignes */
+}
+
+footer p {
+    margin: 5px 0; /* Réduction des marges entre les paragraphes */
+}
+
+footer a {
+    color: #1e90ff; /* Couleur des liens */
+    text-decoration: none; /* Supprime le soulignement */
+    font-weight: bold; /* Met le lien en gras */
+    transition: color 0.3s ease; /* Effet de transition au survol */
+}
+
+footer a:hover {
+    color: #87cefa; /* Change la couleur au survol */
+}
+
+
+/* Animations */
+@keyframes slide-down {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}

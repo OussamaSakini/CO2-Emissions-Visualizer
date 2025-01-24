@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Climate Change Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="../index.html" class="navbar-brand">
+                🌍CO₂ Explorer
+            </a>
+            <ul class="navbar-links">
+                <li><a href="./index.html">Top Contributors</a></li>
+                <li><a href="../Emissions by Sector/index.html">Emissions by Sector</a></li>
+                <li><a href="../CO2 Temperature/index.html">CO₂ & Temperature</a></li>
+                <li><a href="../CO2 Emissions Visualization/Index4.html">Most Affected Countries</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container">
+        <header class="header">
+            <h1>🌍 Climate Change Dashboard</h1>
+        </header>
+        <nav class="tabs">
+            <button class="tab-link active" data-tab="page1">🌐 Bubble Chart</button>
+            <button class="tab-link" data-tab="page2">📊 Bar Chart</button>
+        </nav>
+        <main>
+            <div id="page1" class="tab-content active">
+                <section class="controls-section">
+                    <h2>Bubble Chart - Top Contributors to Climate Change (2000-2021)</h2>
+                    <div class="controls">
+                        <div class="select-group">
+                            <label>Select Category:</label>
+                            <div id="entity-toggle" class="toggle-container">
+                                <div class="toggle-button active" data-value="countries">Countries</div>
+                                <div class="toggle-button" data-value="geographical">Continents</div>
+                            </div>
+                        </div>
+                        <div class="select-group">
+                            <label for="year-select1">Select Year:</label>
+                            <select id="year-select1">
+                                <option value="all">All Years (2000-2021)</option>
+                                <!-- Ajoutez d'autres années ici -->
+                            </select>
+                        </div>
+                    </div>
+                    <div id="emission-type1" class="emission-type">
+                        <h3>Select Emission Type:</h3>
+                        <div class="emission-options">
+                            <div id="sort-global1" class="emission-option active">🌍 Global Emissions</div>
+                            <div id="sort-industrial1" class="emission-option">🔧 Industrial Emissions</div>
+                            <div id="sort-deforestation1" class="emission-option">🌲 Deforestation Emissions</div>
+                        </div>
+                    </div>
+                </section>
+                <div id="chart1" class="chart-container"></div>
+            </div>
+            <div id="page2" class="tab-content">
+                <section class="controls-section">
+                    <h2>Bar Chart - Top Contributors to Climate Change (2000-2021) </h2>
+                    <div class="controls">
+                        <div class="select-group">
+                            <label>Select Category:</label>
+                            <div id="entity-toggle-bar" class="toggle-container">
+                                <div class="toggle-button active" data-value="countries">Countries</div>
+                                <div class="toggle-button" data-value="geographical">Continents</div>
+                            </div>
+                        </div>
+                        <div class="select-group">
+                            <label for="year-select2">Select Year:</label>
+                            <select id="year-select2">
+                                <option value="all">All Years (2000-2021)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="emission-type2" class="emission-type">
+                        <h3>Select Emission Type:</h3>
+                        <div class="emission-options">
+                            <div id="sort-global2" class="emission-option active">🌍 Global Emissions</div>
+                            <div id="sort-industrial2" class="emission-option">🔧 Industrial Emissions</div>
+                            <div id="sort-deforestation2" class="emission-option">🌲 Deforestation Emissions</div>
+                        </div>
+                    </div>
+                </section>
+                <div id="chart2" class="chart-container"></div>
+            </div>
+        </main>
+      <div id="tooltip" style="position: absolute; opacity: 0; background: rgba(255, 255, 255, 0.9); border: 1px solid #ccc; padding: 5px; border-radius: 4px; pointer-events: none; font-size: 0.9rem;"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>
+            Ce projet a été réalisé dans le cadre du cours de 
+            <a href="https://lyondataviz.github.io/teaching/lyon1-m2/2024/" target="_blank">Data Visualisation</a>, 
+            enseigné par le Professeur 
+            <a href="https://tabard.fr/" target="_blank">Aurélien TABARD</a>, 
+            à l'
+            <a href="https://www.univ-lyon1.fr/" target="_blank">Université Claude Bernard Lyon1</a>.
+        </p>
+        <p>&copy; 2025 CO₂ Explorer. All rights reserved.</p>
+    </footer>
+    
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
