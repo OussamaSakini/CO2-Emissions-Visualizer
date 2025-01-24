@@ -107,7 +107,7 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
 ## 🎥 Démonstration / Demonstration
 
 ### 🇫🇷 Français / 🇬🇧 English
-Découvrez une démonstration en direct des visualisations interactives :  
+Découvrez une démonstration des visualisations interactives :  
 _(Ajoutez ici un lien ou une capture d'écran de la démonstration)_
 
 ---
