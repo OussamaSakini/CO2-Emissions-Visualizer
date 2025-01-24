@@ -106,11 +106,8 @@ The data is sourced from reliable platforms like Kaggle, ensuring accuracy and r
 ### 🇫🇷 Français / 🇬🇧 English
 Découvrez une démonstration des visualisations interactives : 
 
-<div align="center">
-  <video src="video.mp4" width="500" controls>
-     Votre navigateur ne supporte pas la balise vidéo.
-  </video>
-</div>
+[🎥 Cliquez ici pour visionner la vidéo](./video.mp4)
+
 
 
 ---
