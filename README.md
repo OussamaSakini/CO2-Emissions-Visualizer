@@ -10,7 +10,7 @@ Plongez dans les données sur les émissions de CO₂ pour explorer les tendance
 
 ## 🖼️ Aperçu du Projet
 <div align="center">
-  <img src="Teaser.png" alt="Aperçu" width="500">
+  <img src="Teaser.png" alt="Aperçu" width="300">
 </div>
 ---
 
